@@ -1,0 +1,1777 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio || ISLOM - Kimyo O'qituvchisi | Xudayberganov Islom</title>
+    <meta name="description" content="Xudayberganov Islom - Professional kimyo o'qituvchisi, ilmiy tadqiqotchi va ta'lim innovatori">
+    <meta name="keywords" content="kimyo, o'qituvchi, chemistry, teacher, Xorazm, Xiva, education">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6b35;
+            --secondary-color: #ff8c42;
+            --accent-color: #ffa726;
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: rgba(255, 107, 53, 0.08);
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #999999;
+            --border-color: rgba(255, 107, 53, 0.2);
+            --shadow-color: rgba(255, 107, 53, 0.15);
+            --gradient-primary: linear-gradient(135deg, #ff6b35, #ff8c42);
+            --gradient-secondary: linear-gradient(135deg, #ff8c42, #ffa726);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-primary);
+            border-radius: 4px;
+        }
+
+        /* Particle Background */
+        .particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 20% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(255, 140, 66, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(255, 167, 38, 0.1) 0%, transparent 50%);
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.6;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--darker-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .molecule-loader {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .atom {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            position: absolute;
+            animation: orbit 2s linear infinite;
+        }
+
+        .atom:nth-child(1) { animation-delay: 0s; }
+        .atom:nth-child(2) { animation-delay: 0.5s; }
+        .atom:nth-child(3) { animation-delay: 1s; }
+        .atom:nth-child(4) { animation-delay: 1.5s; }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .navbar.scrolled {
+            background: rgba(5, 5, 5, 0.98);
+            padding: 0.5rem 0;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+        }
+
+        .nav-menu a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-menu a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-menu a:hover::before,
+        .nav-menu a.active::before {
+            width: 100%;
+        }
+
+        .nav-menu a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-toggle {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--primary-color);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(10,10,10,0.9), rgba(255,107,53,0.05));
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 0 2rem;
+            z-index: 2;
+        }
+
+        .hero-image {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--primary-color);
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 20px 60px var(--shadow-color);
+            position: relative;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            z-index: -1;
+            animation: rotate 10s linear infinite;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .hero .description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 15px 30px;
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 80px 0;
+            background: var(--darker-bg);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* About Section */
+        .about {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .about-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .highlight-item {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease;
+        }
+
+        .highlight-item:hover {
+            transform: translateX(10px);
+        }
+
+        .highlight-item i {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight-item h4 {
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        /* Chemistry Elements Section */
+        .chemistry-elements {
+            padding: 120px 0;
+            background: var(--darker-bg);
+            position: relative;
+        }
+
+        .periodic-table {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .element {
+            aspect-ratio: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+            z-index: 10;
+        }
+
+        .element-symbol {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .element-number {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Skills Section */
+        .skills {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .skill-category {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .skill-category:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px var(--shadow-color);
+        }
+
+        .skill-category h3 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .skill-category i {
+            font-size: 2rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+
+        .skill-list li:last-child {
+            border-bottom: none;
+        }
+
+        .skill-progress {
+            width: 100px;
+            height: 6px;
+            background: rgba(255, 107, 53, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-progress-bar {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 3px;
+            transition: width 2s ease;
+        }
+
+        /* Research Section */
+        .research {
+            padding: 120px 0;
+            background: var(--darker-bg);
+        }
+
+        .research-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .research-card {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .research-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px var(--shadow-color);
+        }
+
+        .research-card h3 {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .research-card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .research-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .research-tag {
+            background: rgba(255, 107, 53, 0.2);
+            color: var(--primary-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Publications Section */
+        .publications {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .publication-item {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .publication-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 15px 30px var(--shadow-color);
+        }
+
+        .publication-title {
+            color: var(--primary-color);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .publication-authors {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .publication-journal {
+            color: var(--text-muted);
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .publication-abstract {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 120px 0;
+            background: var(--darker-bg);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            margin-top: 4rem;
+        }
+
+        .contact-info {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 107, 53, 0.1);
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-right: 1.5rem;
+            width: 30px;
+        }
+
+        .contact-item a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            padding: 3rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1.2rem;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker-bg);
+            padding: 3rem 0 2rem;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .social-links {
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            display: inline-block;
+            margin: 0 1rem;
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px) scale(1.2);
+        }
+
+        .footer-text {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            z-index: 10000;
+            animation: slideIn 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes orbit {
+            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .contact-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .research-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 80px;
+                flex-direction: column;
+                background: rgba(5, 5, 5, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+                backdrop-filter: blur(20px);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-menu li {
+                margin: 1rem 0;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-highlights {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .periodic-table {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        /* Utility Classes */
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="molecule-loader">
+            <div class="atom"></div>
+            <div class="atom"></div>
+            <div class="atom"></div>
+            <div class="atom"></div>
+        </div>
+    </div>
+
+    <!-- Particle Background -->
+    <div class="particles-bg" id="particlesBg"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">Portfolio || ISLOM</a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" class="nav-link">Bosh sahifa</a></li>
+                <li><a href="#about" class="nav-link">Men haqimda</a></li>
+                <li><a href="#skills" class="nav-link">Ko'nikmalar</a></li>
+                <li><a href="#research" class="nav-link">Tadqiqotlar</a></li>
+                <li><a href="#publications" class="nav-link">Nashrlar</a></li>
+                <li><a href="#contact" class="nav-link">Aloqa</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">
+                <i class="fas fa-moon"></i>
+            </button>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <img src="islom rasm.jpg" alt="Xudayberganov Islom" class="hero-image" data-aos="zoom-in">
+            <h1 data-aos="fade-up" data-aos-delay="200">Xudayberganov Islom</h1>
+            <p class="subtitle" data-aos="fade-up" data-aos-delay="400">Kimyo, Assistent O'qituvchi & Tadqiqotchi</p>
+            <p class="description" data-aos="fade-up" data-aos-delay="600">
+                Zamonaviy kimyo ta'limida innovatsion yondashuvlar va ilmiy tadqiqotlar orqali 
+                kelajak avlodini tayyorlashda faol ishtirok etuvchi professional o'qituvchi
+            </p>
+            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="800">
+                <a href="#contact" class="cta-button">
+                    <i class="fas fa-envelope"></i>
+                    Bog'lanish
+                </a>
+                <a href="#research" class="cta-button secondary">
+                    <i class="fas fa-microscope"></i>
+                    Tadqiqotlarim
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
+                <span class="stat-number" data-count="5">0</span>
+                <span class="stat-label">Yillik Tajriba</span>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
+                <span class="stat-number" data-count="500">0</span>
+                <span class="stat-label">O'qitilgan Talabalar</span>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
+                <span class="stat-number" data-count="15">0</span>
+                <span class="stat-label">Ilmiy Maqolalar</span>
+            </div>
+            <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
+                <span class="stat-number" data-count="8">0</span>
+                <span class="stat-label">Loyihalar</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Men Haqimda</h2>
+            <div class="about-content">
+                <div data-aos="fade-right">
+                    <h3 class="text-gradient" style="font-size: 2rem; margin-bottom: 1.5rem;">
+                        Xudayberganov Islom Aniyozovich
+                    </h3>
+                    <p class="about-text">
+                        Kimyo fanidan assistent o'qituvchi va faol tadqiqotchi sifatida, zamonaviy ta'lim 
+                        texnologiyalari va innovatsion metodlar orqali talabalarning kimyoviy bilimlarini 
+                        rivojlantirishga bag'ishlanganman. Xorazm viloyati, Xiva shahrida tug'ilib o'sganman 
+                        va hozirda Varangzon mahallasida istiqomat qilaman.
+                    </p>
+                    <p class="about-text">
+                        Ta'lim jarayonida interaktiv metodlar, laboratoriya tajribalari va zamonaviy 
+                        texnologiyalardan foydalanib, talabalarning nazariy bilimlarini amaliy 
+                        ko'nikmalarga aylantirishga e'tibor beraman. Ilmiy tadqiqot ishlarimda 
+                        organik sintez, kataliz va nanomateriallar sohasida ishlayapman.
+                    </p>
+                </div>
+                <div class="about-highlights" data-aos="fade-left">
+                    <div class="highlight-item">
+                        <i class="fas fa-birthday-cake"></i>
+                        <h4>Tug'ilgan sana</h4>
+                        <p>17-iyun</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <h4>Manzil</h4>
+                        <p>Xorazm, Xiva, Varangzon</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h4>Lavozim</h4>
+                        <p>Assistent O'qituvchi</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-flask"></i>
+                        <h4>Mutaxassislik</h4>
+                        <p>Kimyo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chemistry Elements Section -->
+    
+    <section id="skills" class="skills">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Professional Ko'nikmalar</h2>
+            <div class="skills-grid">
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
+                    <h3><i class="fas fa-flask"></i> Kimyo Sohalari</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <span>Organik Kimyo</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 95%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Noorganik Kimyo</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 90%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Analitik Kimyo</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 88%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Fizik Kimyo</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 85%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
+                    <h3><i class="fas fa-chalkboard-teacher"></i> Ta'lim Metodlari</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <span>Interaktiv Darslar</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 92%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Laboratoriya Tajribalari</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 96%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Raqamli Ta'lim</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 80%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Baholash Metodlari</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 87%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
+                    <h3><i class="fas fa-microscope"></i> Tadqiqot Ko'nikmalari</h3>
+                    <ul class="skill-list">
+                        <li>
+                            <span>Spektroskopiya</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 89%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Kromatografiya</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 91%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Sintez Metodlari</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 93%"></div>
+                            </div>
+                        </li>
+                        <li>
+                            <span>Ma'lumotlar Tahlili</span>
+                            <div class="skill-progress">
+                                <div class="skill-progress-bar" style="width: 84%"></div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Research Section -->
+    <section id="research" class="research">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Ilmiy Tadqiqotlar</h2>
+            <div class="research-grid">
+                <div class="research-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Organik Kataliz va Sintez</h3>
+                    <p>
+                        Yangi katalitik tizimlar yordamida organik birikmalarning selektiv sintezi 
+                        va ularning atrof-muhitga ta'sirini kamaytirish yo'llari bo'yicha tadqiqotlar.
+                    </p>
+                    <div class="research-tags">
+                        <span class="research-tag">Kataliz</span>
+                        <span class="research-tag">Green Chemistry</span>
+                        <span class="research-tag">Sintez</span>
+                    </div>
+                </div>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="200">
+                    <h3>Nanomateriallar va Ularning Qo'llanilishi</h3>
+                    <p>
+                        Kimyoviy sensorlar va katalitik jarayonlarda qo'llaniladigan nanomateriallarning 
+                        sintezi va xarakterizatsiyasi bo'yicha fundamental tadqiqotlar.
+                    </p>
+                    <div class="research-tags">
+                        <span class="research-tag">Nanomateriallar</span>
+                        <span class="research-tag">Sensorlar</span>
+                        <span class="research-tag">Xarakterizatsiya</span>
+                    </div>
+                </div>
+                <div class="research-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Ta'limda Innovatsion Texnologiyalar</h3>
+                    <p>
+                        Kimyo ta'limida virtual laboratoriyalar, AR/VR texnologiyalari va 
+                        interaktiv o'quv materiallarining samaradorligini oshirish metodlari.
+                    </p>
+                    <div class="research-tags">
+                        <span class="research-tag">EdTech</span>
+                        <span class="research-tag">Virtual Lab</span>
+                        <span class="research-tag">AR/VR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Publications Section -->
+    <section id="publications" class="publications">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Ilmiy Nashrlar</h2>
+            <div data-aos="fade-up" data-aos-delay="200">
+                <div class="publication-item">
+                    <h3 class="publication-title">
+                        "Zamonaviy Katalitik Tizimlar: Organik Sintezda Yangi Yondashuvlar"
+                    </h3>
+                    <p class="publication-authors">
+                        <strong>Xudayberganov I.A.</strong>, Karimov A.B., Nazarov S.D.
+                    </p>
+                    <p class="publication-journal">
+                        O'zbekiston Kimyo Jurnali, 2023, 45(3), 123-135
+                    </p>
+                    <p class="publication-abstract">
+                        Ushbu maqolada organik sintezda qo'llaniladigan yangi katalitik tizimlarning 
+                        samaradorligi va selektivligi o'rganilgan. Tadqiqot natijalari ko'rsatdiki...
+                    </p>
+                </div>
+                <div class="publication-item">
+                    <h3 class="publication-title">
+                        "Nanomateriallar Asosidagi Kimyoviy Sensorlar: Sintez va Tahlil"
+                    </h3>
+                    <p class="publication-authors">
+                        Alimov R.K., <strong>Xudayberganov I.A.</strong>, Toshmatov U.N.
+                    </p>
+                    <p class="publication-journal">
+                        Markaziy Osiyo Ilmiy Jurnali, 2023, 12(2), 67-78
+                    </p>
+                    <p class="publication-abstract">
+                        Nanomateriallar asosida yaratilgan kimyoviy sensorlarning sintezi, 
+                        xarakterizatsiyasi va analitik qo'llanilishi bo'yicha tadqiqot...
+                    </p>
+                </div>
+                <div class="publication-item">
+                    <h3 class="publication-title">
+                        "Kimyo Ta'limida Raqamli Texnologiyalar: Samaradorlik Tahlili"
+                    </h3>
+                    <p class="publication-authors">
+                        <strong>Xudayberganov I.A.</strong>, Yusupova M.T.
+                    </p>
+                    <p class="publication-journal">
+                        Ta'lim Innovatsiyalari Jurnali, 2022, 8(4), 45-52
+                    </p>
+                    <p class="publication-abstract">
+                        Kimyo fanini o'qitishda zamonaviy raqamli texnologiyalarning qo'llanilishi 
+                        va ularning ta'lim samaradorligiga ta'siri tahlil qilingan...
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Aloqa</h2>
+            <div class="contact-content">
+                <div class="contact-info" data-aos="fade-right">
+                    <h3 style="color: var(--primary-color); margin-bottom: 2rem; font-size: 1.5rem;">
+                        Bog'lanish Ma'lumotlari
+                    </h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong><br>
+                            <a href="mailto:slomhudajbergnov9@gmail.com">slomhudajbergnov9@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <strong>Telefon</strong><br>
+                            <a href="tel:+998999676121">+998 99 967 61 21</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-telegram"></i>
+                        <div>
+                            <strong>Telegram</strong><br>
+                            <a href="https://t.me/Xudayberganov_Islom" target="_blank">@Xudayberganov_Islom</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <strong>Manzil</strong><br>
+                            <span>Xorazm viloyati, Xiva shahri<br>Varangzon mahallasi</span>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <strong>Ish vaqti</strong><br>
+                            <span>Dushanba - Juma: 9:00 - 18:00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form" data-aos="fade-left">
+                    <h3 style="color: var(--primary-color); margin-bottom: 2rem; font-size: 1.5rem;">
+                        Xabar Yuborish
+                    </h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">To'liq Ism</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Manzil</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Xabar Mavzusi</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Xabar Matni</label>
+                            <textarea id="message" name="message" rows="6" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Xabar Yuborish
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="https://t.me/Xudayberganov_Islom" target="_blank" title="Telegram">
+                    <i class="fab fa-telegram"></i>
+                </a>
+                <a href="mailto:slomhudajbergnov9@gmail.com" title="Email">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="tel:+998999676121" title="Telefon">
+                    <i class="fas fa-phone"></i>
+                </a>
+                <a href="#" title="LinkedIn">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" title="ResearchGate">
+                    <i class="fab fa-researchgate"></i>
+                </a>
+            </div>
+            <div class="footer-links">
+                <a href="#home">Bosh sahifa</a>
+                <a href="#about">Men haqimda</a>
+                <a href="#skills">Ko'nikmalar</a>
+                <a href="#research">Tadqiqotlar</a>
+                <a href="#contact">Aloqa</a>
+            </div>
+            <p class="footer-text">
+                &copy; 2024 Xudayberganov Islom Aniyozovich. Barcha huquqlar himoyalangan.
+            </p>
+            <p class="footer-text">
+                Kimyo ta'limi va ilmiy tadqiqotlar sohasida professional faoliyat
+            </p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Loading Screen
+        window.addEventListener('load', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 2000);
+        });
+
+        // Particle Background
+        function createParticles() {
+            const particlesBg = document.getElementById('particlesBg');
+            const particleCount = 50;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
+                particlesBg.appendChild(particle);
+            }
+        }
+
+        createParticles();
+
+        // Mobile Navigation
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Active navigation link
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Counter animation
+        function animateCounters() {
+            const counters = document.querySelectorAll('.stat-number');
+            counters.forEach(counter => {
+                const target = parseInt(counter.getAttribute('data-count'));
+                const increment = target / 100;
+                let current = 0;
+
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.ceil(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+
+                // Start animation when element is in view
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            updateCounter();
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                });
+
+                observer.observe(counter);
+            });
+        }
+
+        animateCounters();
+
+        // Skill progress animation
+        function animateSkillBars() {
+            const skillBars = document.querySelectorAll('.skill-progress-bar');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bar = entry.target;
+                        const width = bar.style.width;
+                        bar.style.width = '0%';
+                        setTimeout(() => {
+                            bar.style.width = width;
+                        }, 500);
+                        observer.unobserve(bar);
+                    }
+                });
+            });
+
+            skillBars.forEach(bar => observer.observe(bar));
+        }
+
+        animateSkillBars();
+
+        // Chemistry elements interaction
+        document.querySelectorAll('.element').forEach(element => {
+            element.addEventListener('click', () => {
+                const elementSymbol = element.getAttribute('data-element');
+                const elementInfo = getElementInfo(elementSymbol);
+                showElementModal(elementInfo);
+            });
+        });
+
+        function getElementInfo(symbol) {
+            const elements = {
+                'H': { name: 'Vodorod', mass: '1.008', description: 'Eng yengil element' },
+                'He': { name: 'Geliy', mass: '4.003', description: 'Inert gaz' },
+                'Li': { name: 'Litiy', mass: '6.941', description: 'Alkali metal' },
+                'Be': { name: 'Berilliy', mass: '9.012', description: 'Alkaline earth metal' },
+                'B': { name: 'Bor', mass: '10.811', description: 'Metalloid' },
+                'C': { name: 'Uglerod', mass: '12.011', description: 'Nometallar' },
+                'N': { name: 'Azot', mass: '14.007', description: 'Nometallar' },
+                'O': { name: 'Kislorod', mass: '15.999', description: 'Nometallar' }
+            };
+            return elements[symbol] || { name: 'Noma\'lum', mass: '0', description: 'Ma\'lumot yo\'q' };
+        }
+
+        function showElementModal(info) {
+            alert(`Element: ${info.name}\nAtom massasi: ${info.mass}\nTavsif: ${info.description}`);
+        }
+
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const name = formData.get('name');
+            const email = formData.get('email');
+            const subject = formData.get('subject');
+            const message = formData.get('message');
+            
+            // Create mailto link
+            const mailtoLink = `mailto:slomhudajbergnov9@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Ism: ${name}\nEmail: ${email}\n\nXabar:\n${message}`)}`;
+            
+            // Open email client
+            window.location.href = mailtoLink;
+            
+            // Reset form
+            this.reset();
+            
+            // Show success message
+            showNotification('Xabar muvaffaqiyatli yuborildi!', 'success');
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('themeToggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const icon = themeToggle.querySelector('i');
+            if (document.body.classList.contains('light-theme')) {
+                icon.className = 'fas fa-sun';
+            } else {
+                icon.className = 'fas fa-moon';
+            }
+        });
+
+        // Typing effect for hero subtitle
+        function typeWriter(element, text, speed = 100) {
+            let i = 0;
+            element.innerHTML = '';
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Initialize typing effect when page loads
+        setTimeout(() => {
+            const subtitle = document.querySelector('.hero .subtitle');
+            if (subtitle) {
+                const originalText = subtitle.textContent;
+                typeWriter(subtitle, originalText, 80);
+            }
+        }, 3000);
+
+        // Scroll to top button
+        const scrollToTopBtn = document.createElement('button');
+        scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+        scrollToTopBtn.className = 'scroll-to-top';
+        scrollToTopBtn.style.cssText = `
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px var(--shadow-color);
+        `;
+
+        document.body.appendChild(scrollToTopBtn);
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) {
+                scrollToTopBtn.style.opacity = '1';
+                scrollToTopBtn.style.visibility = 'visible';
+            } else {
+                scrollToTopBtn.style.opacity = '0';
+                scrollToTopBtn.style.visibility = 'hidden';
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Add hover effects to cards
+        document.querySelectorAll('.research-card, .skill-category, .publication-item').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Preloader for images
+        function preloadImages() {
+            const images = document.querySelectorAll('img');
+            images.forEach(img => {
+                const imageLoader = new Image();
+                imageLoader.src = img.src;
+            });
+        }
+
+        preloadImages();
+
+        // Console welcome message
+        console.log('%c🧪 Xudayberganov Islom Portfolio', 'color: #ff6b35; font-size: 20px; font-weight: bold;');
+        console.log('%cKimyo ta\'limi va ilmiy tadqiqotlar sohasida professional faoliyat', 'color: #ff8c42; font-size: 14px;');
+        console.log('%cContact: islomhudajbergnov9@gmail.com', 'color: #ffa726; font-size: 12px;');
+    </script>
+</body>
+</html>
