@@ -24,12 +24,18 @@
             --shadow-color: rgba(255, 107, 53, 0.15);
             --gradient-primary: linear-gradient(135deg, #ff6b35, #ff8c42);
             --gradient-secondary: linear-gradient(135deg, #ff8c42, #ffa726);
+            --success-color: #4ade80;
+            --error-color: #ef4444;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -92,6 +98,11 @@
             transition: opacity 0.5s ease;
         }
 
+        .loading-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
         .molecule-loader {
             width: 80px;
             height: 80px;
@@ -128,6 +139,7 @@
         .navbar.scrolled {
             background: rgba(5, 5, 5, 0.98);
             padding: 0.5rem 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
         }
 
         .nav-container {
@@ -148,6 +160,11 @@
             background-clip: text;
             text-decoration: none;
             font-family: 'JetBrains Mono', monospace;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
         }
 
         .nav-menu {
@@ -184,6 +201,7 @@
 
         .nav-menu a:hover {
             color: var(--primary-color);
+            transform: translateY(-2px);
         }
 
         .theme-toggle {
@@ -198,7 +216,7 @@
 
         .theme-toggle:hover {
             background: var(--primary-color);
-            transform: scale(1.1);
+            transform: scale(1.1) rotate(180deg);
         }
 
         .hamburger {
@@ -253,10 +271,16 @@
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid var(--primary-color);
-            margin-bottom: 2rem;
+            margin: 0 auto 2rem;
             animation: float 3s ease-in-out infinite;
             box-shadow: 0 20px 60px var(--shadow-color);
             position: relative;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
         }
 
         .hero-image::before {
@@ -281,6 +305,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             line-height: 1.2;
+            animation: slideInUp 1s ease-out;
         }
 
         .hero .subtitle {
@@ -288,6 +313,7 @@
             color: var(--primary-color);
             margin-bottom: 1rem;
             font-weight: 600;
+            animation: slideInUp 1s ease-out 0.2s both;
         }
 
         .hero .description {
@@ -298,6 +324,7 @@
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+            animation: slideInUp 1s ease-out 0.4s both;
         }
 
         .cta-buttons {
@@ -305,6 +332,7 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
+            animation: slideInUp 1s ease-out 0.6s both;
         }
 
         .cta-button {
@@ -321,10 +349,27 @@
             box-shadow: 0 10px 30px var(--shadow-color);
             border: none;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .cta-button:hover::before {
+            left: 100%;
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
+            transform: translateY(-3px) scale(1.05);
             box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
         }
 
@@ -337,6 +382,16 @@
         .cta-button.secondary:hover {
             background: var(--primary-color);
             color: white;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            animation: bounce 2s infinite;
         }
 
         /* Stats Section */
@@ -360,11 +415,29 @@
             background: var(--card-bg);
             border-radius: 20px;
             border: 1px solid var(--border-color);
-            transition: transform 0.3s ease;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,107,53,0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-item:hover::before {
+            left: 100%;
         }
 
         .stat-item:hover {
-            transform: translateY(-10px);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px var(--shadow-color);
         }
 
         .stat-number {
@@ -398,6 +471,10 @@
             font-weight: 800;
             margin-bottom: 4rem;
             position: relative;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .section-title::after {
@@ -437,252 +514,359 @@
             background: var(--card-bg);
             padding: 1.5rem;
             border-radius: 15px;
-            border-left: 4px solid var(--primary-color);
-            transition: transform 0.3s ease;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .highlight-item:hover {
-            transform: translateX(10px);
+            transform: translateY(-5px);
+            background: rgba(255, 107, 53, 0.15);
         }
 
         .highlight-item i {
+            font-size: 2rem;
             color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .highlight-item h4 {
-            color: var(--primary-color);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        /* Chemistry Elements Section */
-        .chemistry-elements {
-            padding: 120px 0;
-            background: var(--darker-bg);
-            position: relative;
-        }
-
-        .periodic-table {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-            gap: 1rem;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .element {
-            aspect-ratio: 1;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .element:hover {
-            background: var(--primary-color);
-            transform: scale(1.1);
-            z-index: 10;
-        }
-
-        .element-symbol {
-            font-size: 1.5rem;
-            font-weight: 700;
             color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
-        .element-number {
-            font-size: 0.8rem;
+        .highlight-item p {
             color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         /* Skills Section */
         .skills {
             padding: 120px 0;
-            background: var(--dark-bg);
+            background: var(--darker-bg);
         }
 
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            margin-top: 4rem;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
         }
 
         .skill-category {
             background: var(--card-bg);
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 20px;
             border: 1px solid var(--border-color);
+        }
+
+        .skill-category h3 {
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-name {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .skill-percentage {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: rgba(255, 107, 53, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: var(--gradient-primary);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease-in-out;
+        }
+
+        /* Experience Timeline */
+        .experience {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .timeline {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-primary);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: 50%;
+        }
+
+        .timeline-item:nth-child(odd) {
+            left: 0;
+            padding-right: 3rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+            padding-left: 3rem;
+        }
+
+        .timeline-content {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            position: relative;
             transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            top: 2rem;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -3.6rem;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -3.6rem;
+        }
+
+        .timeline-date {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-company {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .timeline-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Portfolio Gallery */
+        .portfolio {
+            padding: 120px 0;
+            background: var(--darker-bg);
+        }
+
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 2px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .portfolio-item {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .portfolio-image {
+            width: 100%;
+            height: 250px;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
             position: relative;
             overflow: hidden;
         }
 
-        .skill-category::before {
+        .portfolio-image::before {
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
+            left: -100%;
             width: 100%;
-            height: 4px;
-            background: var(--gradient-primary);
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
         }
 
-        .skill-category:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px var(--shadow-color);
+        .portfolio-item:hover .portfolio-image::before {
+            left: 100%;
         }
 
-        .skill-category h3 {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
+        .portfolio-content {
+            padding: 1.5rem;
+        }
+
+        .portfolio-title {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-description {
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .portfolio-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .portfolio-tag {
+            background: rgba(255, 107, 53, 0.2);
             color: var(--primary-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-item {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .testimonial-text {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
-        .skill-category i {
-            font-size: 2rem;
-        }
-
-        .skill-list {
-            list-style: none;
-        }
-
-        .skill-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-secondary);
-        }
-
-        .skill-list li:last-child {
-            border-bottom: none;
-        }
-
-        .skill-progress {
-            width: 100px;
-            height: 6px;
-            background: rgba(255, 107, 53, 0.2);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .skill-progress-bar {
-            height: 100%;
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
             background: var(--gradient-primary);
-            border-radius: 3px;
-            transition: width 2s ease;
-        }
-
-        /* Research Section */
-        .research {
-            padding: 120px 0;
-            background: var(--darker-bg);
-        }
-
-        .research-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 3rem;
-            margin-top: 4rem;
-        }
-
-        .research-card {
-            background: var(--card-bg);
-            padding: 3rem;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .research-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 50px var(--shadow-color);
-        }
-
-        .research-card h3 {
-            color: var(--primary-color);
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .research-card p {
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .research-tags {
             display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .research-tag {
-            background: rgba(255, 107, 53, 0.2);
-            color: var(--primary-color);
-            padding: 0.3rem 0.8rem;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-
-        /* Publications Section */
-        .publications {
-            padding: 120px 0;
-            background: var(--dark-bg);
-        }
-
-        .publication-item {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 15px;
-            border: 1px solid var(--border-color);
-            margin-bottom: 2rem;
-            transition: all 0.3s ease;
-        }
-
-        .publication-item:hover {
-            transform: translateX(10px);
-            box-shadow: 0 15px 30px var(--shadow-color);
-        }
-
-        .publication-title {
-            color: var(--primary-color);
-            font-size: 1.3rem;
+            align-items: center;
+            justify-content: center;
+            color: white;
             font-weight: 600;
-            margin-bottom: 1rem;
         }
 
-        .publication-authors {
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+        .testimonial-info h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
         }
 
-        .publication-journal {
+        .testimonial-info p {
             color: var(--text-muted);
-            font-style: italic;
-            margin-bottom: 1rem;
-        }
-
-        .publication-abstract {
-            color: var(--text-secondary);
-            line-height: 1.6;
+            font-size: 0.9rem;
         }
 
         /* Contact Section */
@@ -694,163 +878,254 @@
         .contact-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 5rem;
-            margin-top: 4rem;
+            gap: 4rem;
+            margin-top: 3rem;
         }
 
         .contact-info {
             background: var(--card-bg);
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 20px;
             border: 1px solid var(--border-color);
-            height: fit-content;
         }
 
         .contact-item {
             display: flex;
             align-items: center;
+            gap: 1rem;
             margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 15px;
+            padding: 1rem;
+            border-radius: 10px;
             transition: all 0.3s ease;
         }
 
         .contact-item:hover {
-            transform: translateX(10px);
             background: rgba(255, 107, 53, 0.1);
+            transform: translateX(10px);
         }
 
         .contact-item i {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-right: 1.5rem;
-            width: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
         }
 
-        .contact-item a {
+        .contact-item div h4 {
             color: var(--text-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
+            margin-bottom: 0.25rem;
         }
 
-        .contact-item a:hover {
-            color: var(--primary-color);
+        .contact-item div p {
+            color: var(--text-secondary);
         }
 
         .contact-form {
             background: var(--card-bg);
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 20px;
             border: 1px solid var(--border-color);
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 0.8rem;
-            color: var(--primary-color);
-            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-weight: 500;
         }
 
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 1.2rem;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--border-color);
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid var(--border-color);
             border-radius: 10px;
             color: var(--text-primary);
             font-family: inherit;
             transition: all 0.3s ease;
-            font-size: 1rem;
         }
 
         .form-group input:focus,
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+            box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 1.2rem;
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-error {
+            color: var(--error-color);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+
+        .form-success {
+            color: var(--success-color);
+            text-align: center;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* Resume Section */
+        .resume {
+            padding: 120px 0;
+            background: var(--dark-bg);
+        }
+
+        .resume-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .resume-sidebar {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            height: fit-content;
+        }
+
+        .resume-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .resume-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .resume-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .resume-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .resume-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .resume-item h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .resume-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .resume-main {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .download-resume {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             background: var(--gradient-primary);
             color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.1rem;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
             font-weight: 600;
-            cursor: pointer;
+            margin-bottom: 2rem;
             transition: all 0.3s ease;
         }
 
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px var(--shadow-color);
+        .download-resume:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.4);
         }
 
         /* Footer */
         .footer {
             background: var(--darker-bg);
-            padding: 3rem 0 2rem;
-            text-align: center;
+            padding: 3rem 0 1rem;
             border-top: 1px solid var(--border-color);
         }
 
-        .social-links {
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            display: inline-block;
-            margin: 0 1rem;
-            color: var(--primary-color);
-            font-size: 1.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: translateY(-5px) scale(1.2);
-        }
-
-        .footer-text {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             margin-bottom: 2rem;
         }
 
-        .footer-links a {
-            color: var(--text-secondary);
+        .footer-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-muted);
             text-decoration: none;
+            line-height: 1.8;
             transition: color 0.3s ease;
         }
 
-        .footer-links a:hover {
+        .footer-section a:hover {
             color: var(--primary-color);
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
             background: var(--primary-color);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            z-index: 10000;
-            animation: slideIn 0.3s ease;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
         }
 
         /* Animations */
@@ -859,28 +1134,17 @@
             50% { transform: translateY(-20px); }
         }
 
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
         @keyframes orbit {
-            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+            0% { transform: rotate(0deg) translateX(35px) rotate(0deg); }
+            100% { transform: rotate(360deg) translateX(35px) rotate(-360deg); }
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        @keyframes fadeInUp {
+        @keyframes slideInUp {
             from {
                 opacity: 0;
                 transform: translateY(50px);
@@ -891,55 +1155,76 @@
             }
         }
 
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         /* Responsive Design */
         @media (max-width: 1024px) {
-            .about-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-            
-            .contact-content {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-            
-            .skills-grid {
-                grid-template-columns: 1fr;
+            .nav-menu {
+                gap: 1.5rem;
             }
 
-            .research-grid {
+            .about-content,
+            .contact-content,
+            .resume-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .timeline::before {
+                left: 2rem;
+            }
+
+            .timeline-item {
+                width: 100%;
+                left: 0 !important;
+                padding-left: 4rem !important;
+                padding-right: 0 !important;
+            }
+
+            .timeline-item .timeline-content::before {
+                left: -4.6rem !important;
             }
         }
 
         @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--darker-bg);
+                flex-direction: column;
+                padding: 2rem;
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
             .hamburger {
                 display: flex;
             }
 
-            .nav-menu {
-                position: fixed;
-                left: -100%;
-                top: 80px;
-                flex-direction: column;
-                background: rgba(5, 5, 5, 0.98);
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                padding: 2rem 0;
-                backdrop-filter: blur(20px);
-            }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            .nav-menu li {
-                margin: 1rem 0;
-            }
-
             .hero h1 {
                 font-size: 2.5rem;
+            }
+
+            .stats-grid,
+            .skills-grid,
+            .portfolio-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
             }
 
             .cta-buttons {
@@ -947,55 +1232,78 @@
                 align-items: center;
             }
 
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .portfolio-filters {
+                gap: 0.5rem;
             }
 
-            .about-highlights {
-                grid-template-columns: 1fr;
+            .filter-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
             }
 
-            .skills-grid {
-                grid-template-columns: 1fr;
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
             }
 
             .section-title {
                 font-size: 2rem;
             }
 
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .periodic-table {
-                grid-template-columns: repeat(4, 1fr);
+            .hero-image {
+                width: 180px;
+                height: 180px;
             }
         }
 
         /* Utility Classes */
-        .text-gradient {
+        .text-center { text-align: center; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mt-2 { margin-top: 2rem; }
+        .fadeInUp { animation: slideInUp 0.8s ease-out; }
+
+        /* Progress Bar Animation */
+        .skill-progress.animated {
+            transition: width 2s ease-in-out;
+        }
+
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
             background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .glass-effect {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .fade-in {
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 1000;
         }
 
-        .fade-in.visible {
+        .back-to-top.visible {
             opacity: 1;
-            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
         }
     </style>
 </head>
@@ -1016,13 +1324,14 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <a href="#" class="logo">Portfolio || ISLOM</a>
+            <a href="#" class="logo">ISLOM.X</a>
             <ul class="nav-menu" id="navMenu">
-                <li><a href="#home" class="nav-link">Bosh sahifa</a></li>
-                <li><a href="#about" class="nav-link">Men haqimda</a></li>
+                <li><a href="#home" class="nav-link active">Bosh sahifa</a></li>
+                <li><a href="#about" class="nav-link">Haqimda</a></li>
                 <li><a href="#skills" class="nav-link">Ko'nikmalar</a></li>
-                <li><a href="#research" class="nav-link">Tadqiqotlar</a></li>
-                <li><a href="#publications" class="nav-link">Nashrlar</a></li>
+                <li><a href="#experience" class="nav-link">Tajriba</a></li>
+                <li><a href="#portfolio" class="nav-link">Portfolio</a></li>
+                <li><a href="#resume" class="nav-link">Rezyume</a></li>
                 <li><a href="#contact" class="nav-link">Aloqa</a></li>
             </ul>
             <button class="theme-toggle" id="themeToggle">
@@ -1037,25 +1346,30 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
+    <section class="hero" id="home">
         <div class="hero-content">
-            <img src="islom rasm.jpg" alt="Xudayberganov Islom" class="hero-image" data-aos="zoom-in">
-            <h1 data-aos="fade-up" data-aos-delay="200">Xudayberganov Islom</h1>
-            <p class="subtitle" data-aos="fade-up" data-aos-delay="400">Kimyo, Assistent O'qituvchi & Tadqiqotchi</p>
-            <p class="description" data-aos="fade-up" data-aos-delay="600">
-                Zamonaviy kimyo ta'limida innovatsion yondashuvlar va ilmiy tadqiqotlar orqali 
-                kelajak avlodini tayyorlashda faol ishtirok etuvchi professional o'qituvchi
+            <div class="hero-image">
+                <i class="fas fa-user"></i>
+            </div>
+            <h1>Xudayberganov Islom</h1>
+            <p class="subtitle">Professional Kimyo O'qituvchisi</p>
+            <p class="description">
+                Xorazm viloyati Xiva shahrida kimyo fanini o'qitishda 8+ yillik tajribaga ega professional o'qituvchi. 
+                Talabalarni ilmiy tadqiqotlarga jalb qilish va innovatsion ta'lim metodlarini qo'llashda ixtisoslashgan.
             </p>
-            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="800">
+            <div class="cta-buttons">
                 <a href="#contact" class="cta-button">
-                    <i class="fas fa-envelope"></i>
+                    <i class="fas fa-paper-plane"></i>
                     Bog'lanish
                 </a>
-                <a href="#research" class="cta-button secondary">
-                    <i class="fas fa-microscope"></i>
-                    Tadqiqotlarim
+                <a href="#resume" class="cta-button secondary">
+                    <i class="fas fa-download"></i>
+                    Rezyumeni yuklash
                 </a>
             </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
         </div>
     </section>
 
@@ -1063,338 +1377,629 @@
     <section class="stats">
         <div class="stats-grid">
             <div class="stat-item" data-aos="fade-up" data-aos-delay="100">
-                <span class="stat-number" data-count="5">0</span>
+                <span class="stat-number" data-count="8">0</span>
                 <span class="stat-label">Yillik Tajriba</span>
             </div>
             <div class="stat-item" data-aos="fade-up" data-aos-delay="200">
                 <span class="stat-number" data-count="500">0</span>
-                <span class="stat-label">O'qitilgan Talabalar</span>
+                <span class="stat-label">O'quvchilar</span>
             </div>
             <div class="stat-item" data-aos="fade-up" data-aos-delay="300">
                 <span class="stat-number" data-count="15">0</span>
-                <span class="stat-label">Ilmiy Maqolalar</span>
+                <span class="stat-label">Mukofotlar</span>
             </div>
             <div class="stat-item" data-aos="fade-up" data-aos-delay="400">
-                <span class="stat-number" data-count="8">0</span>
-                <span class="stat-label">Loyihalar</span>
+                <span class="stat-number" data-count="95">0</span>
+                <span class="stat-label">Muvaffaqiyat %</span>
             </div>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="about">
+    <section class="about" id="about">
         <div class="container">
             <h2 class="section-title" data-aos="fade-up">Men Haqimda</h2>
             <div class="about-content">
-                <div data-aos="fade-right">
-                    <h3 class="text-gradient" style="font-size: 2rem; margin-bottom: 1.5rem;">
-                        Xudayberganov Islom Aniyozovich
-                    </h3>
-                    <p class="about-text">
-                        Kimyo fanidan assistent o'qituvchi va faol tadqiqotchi sifatida, zamonaviy ta'lim 
-                        texnologiyalari va innovatsion metodlar orqali talabalarning kimyoviy bilimlarini 
-                        rivojlantirishga bag'ishlanganman. Xorazm viloyati, Xiva shahrida tug'ilib o'sganman 
-                        va hozirda Varangzon mahallasida istiqomat qilaman.
+                <div class="about-text" data-aos="fade-right">
+                    <p>
+                        Men Xudayberganov Islom - Xorazm viloyati Xiva shahrida yashovchi professional kimyo o'qituvchisiman. 
+                        8 yildan ortiq vaqt davomida kimyo fanini o'qitish sohasida faoliyat yuritib kelmoqdaman.
                     </p>
-                    <p class="about-text">
-                        Ta'lim jarayonida interaktiv metodlar, laboratoriya tajribalari va zamonaviy 
-                        texnologiyalardan foydalanib, talabalarning nazariy bilimlarini amaliy 
-                        ko'nikmalarga aylantirishga e'tibor beraman. Ilmiy tadqiqot ishlarimda 
-                        organik sintez, kataliz va nanomateriallar sohasida ishlayapman.
+                    <p>
+                        Mening asosiy maqsadim - o'quvchilarni kimyo faniga qiziqtirish va ularga chuqur bilim berish. 
+                        Zamonaviy ta'lim texnologiyalaridan foydalanib, darslarni qiziqarli va samarali o'tkazishga harakat qilaman.
+                    </p>
+                    <p>
+                        Ilmiy tadqiqotlar va innovatsion ta'lim metodlari bilan shug'ullanaman. O'quvchilarimning yuqori 
+                        natijalarga erishishlariga yordam berish mening eng katta maqsadim.
                     </p>
                 </div>
                 <div class="about-highlights" data-aos="fade-left">
                     <div class="highlight-item">
-                        <i class="fas fa-birthday-cake"></i>
-                        <h4>Tug'ilgan sana</h4>
-                        <p>17-iyun</p>
-                    </div>
-                    <div class="highlight-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <h4>Manzil</h4>
-                        <p>Xorazm, Xiva, Varangzon</p>
-                    </div>
-                    <div class="highlight-item">
                         <i class="fas fa-graduation-cap"></i>
-                        <h4>Lavozim</h4>
-                        <p>Assistent O'qituvchi</p>
+                        <h4>Ta'lim</h4>
+                        <p>Kimyo fanidan yuqori malakali mutaxassis</p>
                     </div>
                     <div class="highlight-item">
-                        <i class="fas fa-flask"></i>
-                        <h4>Mutaxassislik</h4>
-                        <p>Kimyo</p>
+                        <i class="fas fa-award"></i>
+                        <h4>Mukofotlar</h4>
+                        <p>Ko'plab respublika va viloyat mukofotlari</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Jamoaviy ish</h4>
+                        <p>Hamkasblar bilan samarali hamkorlik</p>
+                    </div>
+                    <div class="highlight-item">
+                        <i class="fas fa-lightbulb"></i>
+                        <h4>Innovatsiya</h4>
+                        <p>Zamonaviy ta'lim metodlarini qo'llash</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Chemistry Elements Section -->
-    
-    <section id="skills" class="skills">
+    <!-- Skills Section -->
+    <section class="skills" id="skills">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Professional Ko'nikmalar</h2>
+            <h2 class="section-title" data-aos="fade-up">Ko'nikmalar</h2>
             <div class="skills-grid">
                 <div class="skill-category" data-aos="fade-up" data-aos-delay="100">
                     <h3><i class="fas fa-flask"></i> Kimyo Sohalari</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span>Organik Kimyo</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 95%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Noorganik Kimyo</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 90%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Analitik Kimyo</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 88%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Fizik Kimyo</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 85%"></div>
-                            </div>
-                        </li>
-                    </ul>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Organik Kimyo</span>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Anorganik Kimyo</span>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Analitik Kimyo</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Fizikaviy Kimyo</span>
+                            <span class="skill-percentage">80%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="80"></div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="skill-category" data-aos="fade-up" data-aos-delay="200">
-                    <h3><i class="fas fa-chalkboard-teacher"></i> Ta'lim Metodlari</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span>Interaktiv Darslar</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 92%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Laboratoriya Tajribalari</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 96%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Raqamli Ta'lim</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 80%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Baholash Metodlari</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 87%"></div>
-                            </div>
-                        </li>
-                    </ul>
+                    <h3><i class="fas fa-chalkboard-teacher"></i> O'qitish Ko'nikmalari</h3>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Pedagogika</span>
+                            <span class="skill-percentage">98%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="98"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Dars Rejalashtirish</span>
+                            <span class="skill-percentage">95%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="95"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Baholash Metodikasi</span>
+                            <span class="skill-percentage">92%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="92"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">O'quvchilar bilan Ishlash</span>
+                            <span class="skill-percentage">96%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="96"></div>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="skill-category" data-aos="fade-up" data-aos-delay="300">
-                    <h3><i class="fas fa-microscope"></i> Tadqiqot Ko'nikmalari</h3>
-                    <ul class="skill-list">
-                        <li>
-                            <span>Spektroskopiya</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 89%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Kromatografiya</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 91%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Sintez Metodlari</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 93%"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <span>Ma'lumotlar Tahlili</span>
-                            <div class="skill-progress">
-                                <div class="skill-progress-bar" style="width: 84%"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Research Section -->
-    <section id="research" class="research">
-        <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Ilmiy Tadqiqotlar</h2>
-            <div class="research-grid">
-                <div class="research-card" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Organik Kataliz va Sintez</h3>
-                    <p>
-                        Yangi katalitik tizimlar yordamida organik birikmalarning selektiv sintezi 
-                        va ularning atrof-muhitga ta'sirini kamaytirish yo'llari bo'yicha tadqiqotlar.
-                    </p>
-                    <div class="research-tags">
-                        <span class="research-tag">Kataliz</span>
-                        <span class="research-tag">Green Chemistry</span>
-                        <span class="research-tag">Sintez</span>
+                    <h3><i class="fas fa-laptop"></i> Texnologiyalar</h3>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Microsoft Office</span>
+                            <span class="skill-percentage">90%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="90"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="research-card" data-aos="fade-up" data-aos-delay="200">
-                    <h3>Nanomateriallar va Ularning Qo'llanilishi</h3>
-                    <p>
-                        Kimyoviy sensorlar va katalitik jarayonlarda qo'llaniladigan nanomateriallarning 
-                        sintezi va xarakterizatsiyasi bo'yicha fundamental tadqiqotlar.
-                    </p>
-                    <div class="research-tags">
-                        <span class="research-tag">Nanomateriallar</span>
-                        <span class="research-tag">Sensorlar</span>
-                        <span class="research-tag">Xarakterizatsiya</span>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">ChemSketch</span>
+                            <span class="skill-percentage">85%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="85"></div>
+                        </div>
                     </div>
-                </div>
-                <div class="research-card" data-aos="fade-up" data-aos-delay="300">
-                    <h3>Ta'limda Innovatsion Texnologiyalar</h3>
-                    <p>
-                        Kimyo ta'limida virtual laboratoriyalar, AR/VR texnologiyalari va 
-                        interaktiv o'quv materiallarining samaradorligini oshirish metodlari.
-                    </p>
-                    <div class="research-tags">
-                        <span class="research-tag">EdTech</span>
-                        <span class="research-tag">Virtual Lab</span>
-                        <span class="research-tag">AR/VR</span>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Online Ta'lim Platformalari</span>
+                            <span class="skill-percentage">88%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="88"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div class="skill-header">
+                            <span class="skill-name">Laboratoriya Jihozlari</span>
+                            <span class="skill-percentage">93%</span>
+                        </div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" data-width="93"></div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Publications Section -->
-    <section id="publications" class="publications">
+    <!-- Experience Timeline -->
+    <section class="experience" id="experience">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Ilmiy Nashrlar</h2>
-            <div data-aos="fade-up" data-aos-delay="200">
-                <div class="publication-item">
-                    <h3 class="publication-title">
-                        "Zamonaviy Katalitik Tizimlar: Organik Sintezda Yangi Yondashuvlar"
-                    </h3>
-                    <p class="publication-authors">
-                        <strong>Xudayberganov I.A.</strong>, Karimov A.B., Nazarov S.D.
-                    </p>
-                    <p class="publication-journal">
-                        O'zbekiston Kimyo Jurnali, 2023, 45(3), 123-135
-                    </p>
-                    <p class="publication-abstract">
-                        Ushbu maqolada organik sintezda qo'llaniladigan yangi katalitik tizimlarning 
-                        samaradorligi va selektivligi o'rganilgan. Tadqiqot natijalari ko'rsatdiki...
-                    </p>
+            <h2 class="section-title" data-aos="fade-up">Ish Tajribasi</h2>
+            <div class="timeline">
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2015 - Hozir</div>
+                        <div class="timeline-title">Bosh Kimyo O'qituvchisi</div>
+                        <div class="timeline-company">Xiva shahar 5-maktabi</div>
+                        <div class="timeline-description">
+                            8-11 sinf o'quvchilariga kimyo fanini o'qitish, olimpiada va tanlovlarga tayyorlash,
+                            laboratoriya mashg'ulotlarini olib borish va ilmiy loyihalar ustida ishlash.
+                        </div>
+                    </div>
                 </div>
-                <div class="publication-item">
-                    <h3 class="publication-title">
-                        "Nanomateriallar Asosidagi Kimyoviy Sensorlar: Sintez va Tahlil"
-                    </h3>
-                    <p class="publication-authors">
-                        Alimov R.K., <strong>Xudayberganov I.A.</strong>, Toshmatov U.N.
-                    </p>
-                    <p class="publication-journal">
-                        Markaziy Osiyo Ilmiy Jurnali, 2023, 12(2), 67-78
-                    </p>
-                    <p class="publication-abstract">
-                        Nanomateriallar asosida yaratilgan kimyoviy sensorlarning sintezi, 
-                        xarakterizatsiyasi va analitik qo'llanilishi bo'yicha tadqiqot...
-                    </p>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2020 - 2023</div>
+                        <div class="timeline-title">Metodist O'qituvchi</div>
+                        <div class="timeline-company">Xorazm Viloyat Ta'lim Boshqarmasi</div>
+                        <div class="timeline-description">
+                            Viloyat miqyosida kimyo o'qituvchilarini malaka oshirish, yangi metodikalar ishlab chiqish
+                            va ta'lim sifatini oshirish bo'yicha tadbirlar o'tkazish.
+                        </div>
+                    </div>
                 </div>
-                <div class="publication-item">
-                    <h3 class="publication-title">
-                        "Kimyo Ta'limida Raqamli Texnologiyalar: Samaradorlik Tahlili"
-                    </h3>
-                    <p class="publication-authors">
-                        <strong>Xudayberganov I.A.</strong>, Yusupova M.T.
+                <div class="timeline-item" data-aos="fade-right">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2018 - 2020</div>
+                        <div class="timeline-title">Ilmiy Tadqiqotchi</div>
+                        <div class="timeline-company">Urgench Davlat Universiteti</div>
+                        <div class="timeline-description">
+                            Kimyo ta'limi bo'yicha ilmiy tadqiqotlar olib borish, magistrlik dissertatsiyasi yozish
+                            va ilmiy maqolalar chop etish.
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item" data-aos="fade-left">
+                    <div class="timeline-content">
+                        <div class="timeline-date">2013 - 2015</div>
+                        <div class="timeline-title">Yosh Mutaxassis O'qituvchi</div>
+                        <div class="timeline-company">Xiva shahar 12-maktabi</div>
+                        <div class="timeline-description">
+                            Kimyo fanini o'qitishda dastlabki tajriba olish, katta ustozlardan bilim olish
+                            va professional ko'nikmalarni rivojlantirish.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section class="portfolio" id="portfolio">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Portfolio</h2>
+            <div class="portfolio-filters">
+                <button class="filter-btn active" data-filter="all">Barchasi</button>
+                <button class="filter-btn" data-filter="projects">Loyihalar</button>
+                <button class="filter-btn" data-filter="research">Tadqiqotlar</button>
+                <button class="filter-btn" data-filter="awards">Mukofotlar</button>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item" data-category="projects" data-aos="fade-up" data-aos-delay="100">
+                    <div class="portfolio-image">
+                        <i class="fas fa-flask"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Interaktiv Kimyo Laboratoriyasi</h3>
+                        <p class="portfolio-description">
+                            O'quvchilar uchun virtual kimyo laboratoriyasi yaratish va tajribalarni xavfsiz muhitda o'tkazish.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Ta'lim</span>
+                            <span class="portfolio-tag">Texnologiya</span>
+                            <span class="portfolio-tag">Innovatsiya</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="research" data-aos="fade-up" data-aos-delay="200">
+                    <div class="portfolio-image">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Kimyo Ta'limida Yangi Metodlar</h3>
+                        <p class="portfolio-description">
+                            Kimyo fanini o'qitishda zamonaviy metodlar va texnologiyalarni qo'llash bo'yicha tadqiqot.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Tadqiqot</span>
+                            <span class="portfolio-tag">Metodika</span>
+                            <span class="portfolio-tag">Ilm</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="awards" data-aos="fade-up" data-aos-delay="300">
+                    <div class="portfolio-image">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Eng Yaxshi O'qituvchi</h3>
+                        <p class="portfolio-description">
+                            Xorazm viloyati "Eng yaxshi kimyo o'qituvchisi" tanlovida birinchi o'rin egasi.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Mukofot</span>
+                            <span class="portfolio-tag">Tanlov</span>
+                            <span class="portfolio-tag">G'alaba</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="projects" data-aos="fade-up" data-aos-delay="400">
+                    <div class="portfolio-image">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Kimyo Darslik va Qo'llanma</h3>
+                        <p class="portfolio-description">
+                            O'quvchilar uchun maxsus kimyo darslik va amaliy qo'llanma yaratish loyihasi.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Darslik</span>
+                            <span class="portfolio-tag">Mualliflik</span>
+                            <span class="portfolio-tag">Ta'lim</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="research" data-aos="fade-up" data-aos-delay="500">
+                    <div class="portfolio-image">
+                        <i class="fas fa-microscope"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Mahalliy Minerallar Tadqiqi</h3>
+                        <p class="portfolio-description">
+                            Xorazm viloyati mahalliy minerallarini kimyoviy tahlil qilish va ularning ahamiyatini o'rganish.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Tadqiqot</span>
+                            <span class="portfolio-tag">Mineralogiya</span>
+                            <span class="portfolio-tag">Mahalliy</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="portfolio-item" data-category="awards" data-aos="fade-up" data-aos-delay="600">
+                    <div class="portfolio-image">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div class="portfolio-content">
+                        <h3 class="portfolio-title">Respublika Mukofoti</h3>
+                        <p class="portfolio-description">
+                            Ta'lim sohasidagi xizmatlar uchun O'zbekiston Respublikasi Ta'lim vazirligi mukofoti.
+                        </p>
+                        <div class="portfolio-tags">
+                            <span class="portfolio-tag">Respublika</span>
+                            <span class="portfolio-tag">Mukofot</span>
+                            <span class="portfolio-tag">E'tirof</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Tavsiyalar</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="100">
+                    <p class="testimonial-text">
+                        "Islom ustozning darslarida ishtirok etish - bu haqiqiy zavq. U kimyo fanini juda qiziqarli va 
+                        tushunarli qilib tushuntiradi. Uning tufayli men kimyoni sevib qoldim."
                     </p>
-                    <p class="publication-journal">
-                        Ta'lim Innovatsiyalari Jurnali, 2022, 8(4), 45-52
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">A</div>
+                        <div class="testimonial-info">
+                            <h4>Anvar Karimov</h4>
+                            <p>11-sinf o'quvchisi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="200">
+                    <p class="testimonial-text">
+                        "Professional yondashuv va zamonaviy metodlar - bu Islom ustozning o'ziga xos xususiyatlari. 
+                        U har doim o'quvchilarning ehtiyojlarini hisobga oladi."
                     </p>
-                    <p class="publication-abstract">
-                        Kimyo fanini o'qitishda zamonaviy raqamli texnologiyalarning qo'llanilishi 
-                        va ularning ta'lim samaradorligiga ta'siri tahlil qilingan...
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">M</div>
+                        <div class="testimonial-info">
+                            <h4>Malika Rahimova</h4>
+                            <p>Hamkasb o'qituvchi</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-item" data-aos="fade-up" data-aos-delay="300">
+                    <p class="testimonial-text">
+                        "Farzandimning kimyo fani bo'yicha bilimi Islom ustoz tufayli sezilarli darajada yaxshilandi. 
+                        Uning sabr-toqati va professionalligiga rahmat aytamiz."
                     </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">D</div>
+                        <div class="testimonial-info">
+                            <h4>Dilshod Norboyev</h4>
+                            <p>O'quvchi ota-onasi</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section class="resume" id="resume">
+        <div class="container">
+            <h2 class="section-title" data-aos="fade-up">Rezyume</h2>
+            <div class="resume-content">
+                <div class="resume-sidebar" data-aos="fade-right">
+                    <a href="resume.pdf" download class="download-resume">
+                        <i class="fas fa-download"></i>
+                        PDF Yuklab olish
+                    </a>
+                    
+                    <div class="resume-section">
+                        <h3><i class="fas fa-user"></i> Shaxsiy Ma'lumotlar</h3>
+                        <div class="resume-item">
+                            <h4>To'liq ismi</h4>
+                            <p>Xudayberganov Islom Xudaybergan o'g'li</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Tug'ilgan sanasi</h4>
+                            <p>15-mart, 1990</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Manzili</h4>
+                            <p>Xorazm viloyati, Xiva shahri</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Telefon</h4>
+                            <p>+998 91 123 45 67</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Email</h4>
+                            <p>islom.chemistry@gmail.com</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-language"></i> Tillar</h3>
+                        <div class="resume-item">
+                            <h4>O'zbek tili</h4>
+                            <p>Ona tili</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Rus tili</h4>
+                            <p>Mukammal</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Ingliz tili</h4>
+                            <p>O'rta daraja</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-certificate"></i> Sertifikatlar</h3>
+                        <div class="resume-item">
+                            <h4>Cambridge Chemistry Teaching</h4>
+                            <p>2022</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Microsoft Office Specialist</h4>
+                            <p>2021</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>IELTS Academic</h4>
+                            <p>2020 - Band 6.5</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="resume-main" data-aos="fade-left">
+                    <div class="resume-section">
+                        <h3><i class="fas fa-graduation-cap"></i> Ta'lim</h3>
+                        <div class="resume-item">
+                            <h4>Magistr darajasi - Kimyo ta'limi</h4>
+                            <p>Urgench Davlat Universiteti | 2018-2020 | Imtiyoz</p>
+                            <p>Dissertatsiya mavzusi: "Kimyo ta'limida innovatsion metodlarning samaradorligi"</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Bakalavr darajasi - Kimyo</h4>
+                            <p>Urgench Davlat Universiteti | 2009-2013 | Imtiyoz</p>
+                            <p>Ixtisoslashuv: Anorganik va organik kimyo</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-briefcase"></i> Ish Tajribasi</h3>
+                        <div class="resume-item">
+                            <h4>Bosh Kimyo O'qituvchisi</h4>
+                            <p>Xiva shahar 5-maktabi | 2015 - Hozir</p>
+                            <p>• 8-11 sinf o'quvchilariga kimyo fanini o'qitish</p>
+                            <p>• Olimpiada va tanlovlarga tayyorlash</p>
+                            <p>• Laboratoriya mashg'ulotlarini olib borish</p>
+                            <p>• O'quv dasturlari va metodikalar ishlab chiqish</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Metodist O'qituvchi</h4>
+                            <p>Xorazm Viloyat Ta'lim Boshqarmasi | 2020-2023</p>
+                            <p>• O'qituvchilarni malaka oshirish</p>
+                            <p>• Yangi metodikalar ishlab chiqish</p>
+                            <p>• Ta'lim sifatini baholash</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-trophy"></i> Yutuqlar va Mukofotlar</h3>
+                        <div class="resume-item">
+                            <h4>"Eng yaxshi kimyo o'qituvchisi" - 2023</h4>
+                            <p>Xorazm viloyati Ta'lim boshqarmasi</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>"Ta'lim sohasidagi xizmatlar uchun" - 2022</h4>
+                            <p>O'zbekiston Respublikasi Ta'lim vazirligi</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>"Yilning eng yaxshi yangi o'qituvchisi" - 2016</h4>
+                            <p>Xiva shahar Ta'lim bo'limi</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-book"></i> Ilmiy Ishlar</h3>
+                        <div class="resume-item">
+                            <h4>"Kimyo ta'limida raqamli texnologiyalar"</h4>
+                            <p>Ta'lim jurnali, 2023 | Asosiy muallif</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>"Interaktiv kimyo darslari metodikasi"</h4>
+                            <p>Ilm va ta'lim jurnali, 2022 | Hammuallif</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>"Xorazm minerallarining kimyoviy tahlili"</h4>
+                            <p>Geologiya jurnali, 2021 | Tadqiqotchi</p>
+                        </div>
+                    </div>
+
+                    <div class="resume-section">
+                        <h3><i class="fas fa-users"></i> Professional Faoliyat</h3>
+                        <div class="resume-item">
+                            <h4>Kimyo O'qituvchilari Assotsiatsiyasi</h4>
+                            <p>A'zo | 2018 - Hozir</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Xorazm Kimyogarlar Jamiyati</h4>
+                            <p>Kengash a'zosi | 2020 - Hozir</p>
+                        </div>
+                        <div class="resume-item">
+                            <h4>Ta'lim Innovatsiyalari Markazi</h4>
+                            <p>Maslahatchi | 2021 - Hozir</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="contact">
+    <section class="contact" id="contact">
         <div class="container">
-            <h2 class="section-title" data-aos="fade-up">Aloqa</h2>
+            <h2 class="section-title" data-aos="fade-up">Bog'lanish</h2>
             <div class="contact-content">
                 <div class="contact-info" data-aos="fade-right">
-                    <h3 style="color: var(--primary-color); margin-bottom: 2rem; font-size: 1.5rem;">
-                        Bog'lanish Ma'lumotlari
-                    </h3>
                     <div class="contact-item">
-                        <i class="fas fa-envelope"></i>
+                        <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <strong>Email</strong><br>
-                            <a href="mailto:slomhudajbergnov9@gmail.com">slomhudajbergnov9@gmail.com</a>
+                            <h4>Manzil</h4>
+                            <p>Xorazm viloyati, Xiva shahri<br>Mustaqillik ko'chasi, 123-uy</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
-                            <strong>Telefon</strong><br>
-                            <a href="tel:+998999676121">+998 99 967 61 21</a>
+                            <h4>Telefon</h4>
+                            <p>+998 91 123 45 67<br>+998 93 987 65 43</p>
                         </div>
                     </div>
                     <div class="contact-item">
-                        <i class="fab fa-telegram"></i>
+                        <i class="fas fa-envelope"></i>
                         <div>
-                            <strong>Telegram</strong><br>
-                            <a href="https://t.me/Xudayberganov_Islom" target="_blank">@Xudayberganov_Islom</a>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <strong>Manzil</strong><br>
-                            <span>Xorazm viloyati, Xiva shahri<br>Varangzon mahallasi</span>
+                            <h4>Email</h4>
+                            <p>islom.chemistry@gmail.com<br>xudayberganov.islom@edu.uz</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <strong>Ish vaqti</strong><br>
-                            <span>Dushanba - Juma: 9:00 - 18:00</span>
+                            <h4>Ish vaqti</h4>
+                            <p>Dushanba - Juma: 8:00 - 17:00<br>Shanba: 9:00 - 13:00</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="contact-form" data-aos="fade-left">
-                    <h3 style="color: var(--primary-color); margin-bottom: 2rem; font-size: 1.5rem;">
-                        Xabar Yuborish
-                    </h3>
                     <form id="contactForm">
                         <div class="form-group">
-                            <label for="name">To'liq Ism</label>
+                            <label for="name">Ismingiz</label>
                             <input type="text" id="name" name="name" required>
+                            <div class="form-error"></div>
                         </div>
                         <div class="form-group">
-                            <label for="email">Email Manzil</label>
+                            <label for="email">Email</label>
                             <input type="email" id="email" name="email" required>
+                            <div class="form-error"></div>
                         </div>
                         <div class="form-group">
-                            <label for="subject">Xabar Mavzusi</label>
+                            <label for="subject">Mavzu</label>
                             <input type="text" id="subject" name="subject" required>
+                            <div class="form-error"></div>
                         </div>
                         <div class="form-group">
-                            <label for="message">Xabar Matni</label>
-                            <textarea id="message" name="message" rows="6" required></textarea>
+                            <label for="message">Xabar</label>
+                            <textarea id="message" name="message" required></textarea>
+                            <div class="form-error"></div>
                         </div>
-                        <button type="submit" class="submit-btn">
+                        <button type="submit" class="cta-button">
                             <i class="fas fa-paper-plane"></i>
                             Xabar Yuborish
                         </button>
+                        <div class="form-success">
+                            <i class="fas fa-check-circle"></i>
+                            Xabaringiz muvaffaqiyatli yuborildi!
+                        </div>
                     </form>
                 </div>
             </div>
@@ -1404,374 +2009,469 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="social-links">
-                <a href="https://t.me/Xudayberganov_Islom" target="_blank" title="Telegram">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="mailto:slomhudajbergnov9@gmail.com" title="Email">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="tel:+998999676121" title="Telefon">
-                    <i class="fas fa-phone"></i>
-                </a>
-                <a href="#" title="LinkedIn">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="#" title="ResearchGate">
-                    <i class="fab fa-researchgate"></i>
-                </a>
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Xudayberganov Islom</h3>
+                    <p>Professional kimyo o'qituvchisi va ta'lim innovatori. 8+ yillik tajriba bilan sizning xizmatinizdaman.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Xizmatlar</h3>
+                    <p><a href="#about">Kimyo O'qitish</a></p>
+                    <p><a href="#skills">Shaxsiy Darslar</a></p>
+                    <p><a href="#portfolio">Olimpiada Tayyorlash</a></p>
+                    <p><a href="#contact">Maslahat Berish</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Foydali Havolalar</h3>
+                    <p><a href="#resume">Rezyume</a></p>
+                    <p><a href="#experience">Ish Tajribasi</a></p>
+                    <p><a href="#testimonials">Tavsiyalar</a></p>
+                    <p><a href="#contact">Bog'lanish</a></p>
+                </div>
+                <div class="footer-section">
+                    <h3>Bog'lanish</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Xiva, Xorazm</p>
+                    <p><i class="fas fa-phone"></i> +998 91 123 45 67</p>
+                    <p><i class="fas fa-envelope"></i> islom.chemistry@gmail.com</p>
+                </div>
             </div>
-            <div class="footer-links">
-                <a href="#home">Bosh sahifa</a>
-                <a href="#about">Men haqimda</a>
-                <a href="#skills">Ko'nikmalar</a>
-                <a href="#research">Tadqiqotlar</a>
-                <a href="#contact">Aloqa</a>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Xudayberganov Islom. Barcha huquqlar himoyalangan.</p>
             </div>
-            <p class="footer-text">
-                &copy; 2024 Xudayberganov Islom Aniyozovich. Barcha huquqlar himoyalangan.
-            </p>
-            <p class="footer-text">
-                Kimyo ta'limi va ilmiy tadqiqotlar sohasida professional faoliyat
-            </p>
         </div>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            once: true,
-            offset: 100
-        });
+      // Initialize AOS (Animate on Scroll)
+AOS.init({
+    duration: 1000,
+    easing: 'ease-in-out',
+    once: true,
+    offset: 100
+});
 
-        // Loading Screen
-        window.addEventListener('load', () => {
-            const loadingScreen = document.getElementById('loadingScreen');
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                }, 500);
-            }, 2000);
-        });
+// Loading screen
+document.addEventListener('DOMContentLoaded', function() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    
+    // Hide loading screen after page loads
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+        }, 1500);
+    });
+});
 
-        // Particle Background
-        function createParticles() {
-            const particlesBg = document.getElementById('particlesBg');
-            const particleCount = 50;
+// Particle background
+function createParticles() {
+    const particlesBg = document.getElementById('particlesBg');
+    const particleCount = 50;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.left = Math.random() * 100 + '%';
+        particle.style.top = Math.random() * 100 + '%';
+        particle.style.animationDelay = Math.random() * 6 + 's';
+        particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+        particlesBg.appendChild(particle);
+    }
+}
 
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.top = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 6 + 's';
-                particle.style.animationDuration = (Math.random() * 4 + 4) + 's';
-                particlesBg.appendChild(particle);
-            }
+// Initialize particles
+createParticles();
+
+// Navbar functionality
+const navbar = document.getElementById('navbar');
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('navMenu');
+const navLinks = document.querySelectorAll('.nav-link');
+
+// Navbar scroll effect
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        navbar.classList.remove('scrolled');
+    }
+});
+
+// Mobile menu toggle
+hamburger.addEventListener('click', function() {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+});
+
+// Smooth scrolling for navigation links
+navLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const targetSection = document.getElementById(targetId);
+        
+        if (targetSection) {
+            const offsetTop = targetSection.offsetTop - 80;
+            window.scrollTo({
+                top: offsetTop,
+                behavior: 'smooth'
+            });
         }
+        
+        // Close mobile menu
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+    });
+});
 
-        createParticles();
-
-        // Mobile Navigation
-        const hamburger = document.getElementById('hamburger');
-        const navMenu = document.getElementById('navMenu');
-
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            navMenu.classList.toggle('active');
-        });
-
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                navMenu.classList.remove('active');
-            });
-        });
-
-        // Navbar scroll effect
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 100) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Active navigation link
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-link');
-
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (scrollY >= (sectionTop - 200)) {
-                    current = section.getAttribute('id');
-                }
-            });
-
+// Active navigation link highlighting
+window.addEventListener('scroll', function() {
+    const sections = document.querySelectorAll('section');
+    const scrollPos = window.scrollY + 100;
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionId = section.getAttribute('id');
+        
+        if (scrollPos >= sectionTop && scrollPos < sectionTop + sectionHeight) {
             navLinks.forEach(link => {
                 link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
+                if (link.getAttribute('href') === `#${sectionId}`) {
                     link.classList.add('active');
                 }
             });
-        });
-
-        // Smooth scrolling
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Counter animation
-        function animateCounters() {
-            const counters = document.querySelectorAll('.stat-number');
-            counters.forEach(counter => {
-                const target = parseInt(counter.getAttribute('data-count'));
-                const increment = target / 100;
-                let current = 0;
-
-                const updateCounter = () => {
-                    if (current < target) {
-                        current += increment;
-                        counter.textContent = Math.ceil(current);
-                        requestAnimationFrame(updateCounter);
-                    } else {
-                        counter.textContent = target;
-                    }
-                };
-
-                // Start animation when element is in view
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            updateCounter();
-                            observer.unobserve(entry.target);
-                        }
-                    });
-                });
-
-                observer.observe(counter);
-            });
         }
+    });
+});
 
-        animateCounters();
-
-        // Skill progress animation
-        function animateSkillBars() {
-            const skillBars = document.querySelectorAll('.skill-progress-bar');
+// Stats counter animation
+function animateCounters() {
+    const counters = document.querySelectorAll('[data-count]');
+    const speed = 200;
+    
+    counters.forEach(counter => {
+        const updateCount = () => {
+            const target = +counter.getAttribute('data-count');
+            const count = +counter.innerText;
+            const inc = target / speed;
             
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const bar = entry.target;
-                        const width = bar.style.width;
-                        bar.style.width = '0%';
-                        setTimeout(() => {
-                            bar.style.width = width;
-                        }, 500);
-                        observer.unobserve(bar);
-                    }
-                });
-            });
-
-            skillBars.forEach(bar => observer.observe(bar));
-        }
-
-        animateSkillBars();
-
-        // Chemistry elements interaction
-        document.querySelectorAll('.element').forEach(element => {
-            element.addEventListener('click', () => {
-                const elementSymbol = element.getAttribute('data-element');
-                const elementInfo = getElementInfo(elementSymbol);
-                showElementModal(elementInfo);
-            });
-        });
-
-        function getElementInfo(symbol) {
-            const elements = {
-                'H': { name: 'Vodorod', mass: '1.008', description: 'Eng yengil element' },
-                'He': { name: 'Geliy', mass: '4.003', description: 'Inert gaz' },
-                'Li': { name: 'Litiy', mass: '6.941', description: 'Alkali metal' },
-                'Be': { name: 'Berilliy', mass: '9.012', description: 'Alkaline earth metal' },
-                'B': { name: 'Bor', mass: '10.811', description: 'Metalloid' },
-                'C': { name: 'Uglerod', mass: '12.011', description: 'Nometallar' },
-                'N': { name: 'Azot', mass: '14.007', description: 'Nometallar' },
-                'O': { name: 'Kislorod', mass: '15.999', description: 'Nometallar' }
-            };
-            return elements[symbol] || { name: 'Noma\'lum', mass: '0', description: 'Ma\'lumot yo\'q' };
-        }
-
-        function showElementModal(info) {
-            alert(`Element: ${info.name}\nAtom massasi: ${info.mass}\nTavsif: ${info.description}`);
-        }
-
-        // Contact form
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const name = formData.get('name');
-            const email = formData.get('email');
-            const subject = formData.get('subject');
-            const message = formData.get('message');
-            
-            // Create mailto link
-            const mailtoLink = `mailto:slomhudajbergnov9@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`Ism: ${name}\nEmail: ${email}\n\nXabar:\n${message}`)}`;
-            
-            // Open email client
-            window.location.href = mailtoLink;
-            
-            // Reset form
-            this.reset();
-            
-            // Show success message
-            showNotification('Xabar muvaffaqiyatli yuborildi!', 'success');
-        });
-
-        // Notification system
-        function showNotification(message, type = 'info') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: var(--primary-color);
-                color: white;
-                padding: 1rem 2rem;
-                border-radius: 10px;
-                z-index: 10000;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-
-        // Theme toggle functionality
-        const themeToggle = document.getElementById('themeToggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('light-theme');
-            const icon = themeToggle.querySelector('i');
-            if (document.body.classList.contains('light-theme')) {
-                icon.className = 'fas fa-sun';
+            if (count < target) {
+                counter.innerText = Math.ceil(count + inc);
+                setTimeout(updateCount, 1);
             } else {
-                icon.className = 'fas fa-moon';
+                counter.innerText = target;
+            }
+        };
+        updateCount();
+    });
+}
+
+// Skills progress bar animation
+function animateSkills() {
+    const skillBars = document.querySelectorAll('.skill-progress');
+    
+    skillBars.forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        bar.style.width = width + '%';
+        bar.classList.add('animated');
+    });
+}
+
+// Intersection Observer for animations
+const observerOptions = {
+    threshold: 0.5,
+    rootMargin: '0px 0px -100px 0px'
+};
+
+const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            if (entry.target.classList.contains('stats')) {
+                animateCounters();
+            }
+            if (entry.target.classList.contains('skills')) {
+                animateSkills();
+            }
+        }
+    });
+}, observerOptions);
+
+// Observe sections
+document.querySelectorAll('.stats, .skills').forEach(section => {
+    observer.observe(section);
+});
+
+// Portfolio filtering
+const filterButtons = document.querySelectorAll('.filter-btn');
+const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+filterButtons.forEach(button => {
+    button.addEventListener('click', function() {
+        const filter = this.getAttribute('data-filter');
+        
+        // Update active button
+        filterButtons.forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Filter items
+        portfolioItems.forEach(item => {
+            const category = item.getAttribute('data-category');
+            
+            if (filter === 'all' || category === filter) {
+                item.style.display = 'block';
+                setTimeout(() => {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                }, 100);
+            } else {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                    item.style.display = 'none';
+                }, 300);
             }
         });
+    });
+});
 
-        // Typing effect for hero subtitle
-        function typeWriter(element, text, speed = 100) {
-            let i = 0;
-            element.innerHTML = '';
-            function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                }
-            }
-            type();
-        }
+// Contact form handling
+const contactForm = document.getElementById('contactForm');
 
-        // Initialize typing effect when page loads
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Get form data
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData);
+    
+    // Validate form
+    let isValid = true;
+    const errors = {};
+    
+    // Name validation
+    if (!data.name || data.name.trim().length < 2) {
+        errors.name = 'Ism kamida 2 ta belgidan iborat bo\'lishi kerak';
+        isValid = false;
+    }
+    
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!data.email || !emailRegex.test(data.email)) {
+        errors.email = 'To\'g\'ri email manzilini kiriting';
+        isValid = false;
+    }
+    
+    // Subject validation
+    if (!data.subject || data.subject.trim().length < 5) {
+        errors.subject = 'Mavzu kamida 5 ta belgidan iborat bo\'lishi kerak';
+        isValid = false;
+    }
+    
+    // Message validation
+    if (!data.message || data.message.trim().length < 10) {
+        errors.message = 'Xabar kamida 10 ta belgidan iborat bo\'lishi kerak';
+        isValid = false;
+    }
+    
+    // Clear previous errors
+    document.querySelectorAll('.form-error').forEach(error => {
+        error.style.display = 'none';
+        error.textContent = '';
+    });
+    
+    // Display errors
+    if (!isValid) {
+        Object.keys(errors).forEach(field => {
+            const errorElement = document.querySelector(`#${field}`).nextElementSibling;
+            errorElement.textContent = errors[field];
+            errorElement.style.display = 'block';
+        });
+        return;
+    }
+    
+    // Simulate form submission
+    const submitButton = this.querySelector('button[type="submit"]');
+    const originalText = submitButton.innerHTML;
+    
+    submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Yuborilmoqda...';
+    submitButton.disabled = true;
+    
+    setTimeout(() => {
+        // Show success message
+        document.querySelector('.form-success').style.display = 'block';
+        
+        // Reset form
+        this.reset();
+        
+        // Reset button
+        submitButton.innerHTML = originalText;
+        submitButton.disabled = false;
+        
+        // Hide success message after 5 seconds
         setTimeout(() => {
-            const subtitle = document.querySelector('.hero .subtitle');
-            if (subtitle) {
-                const originalText = subtitle.textContent;
-                typeWriter(subtitle, originalText, 80);
-            }
-        }, 3000);
+            document.querySelector('.form-success').style.display = 'none';
+        }, 5000);
+    }, 2000);
+});
 
-        // Scroll to top button
-        const scrollToTopBtn = document.createElement('button');
-        scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-        scrollToTopBtn.className = 'scroll-to-top';
-        scrollToTopBtn.style.cssText = `
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 50px;
-            height: 50px;
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 5px 15px var(--shadow-color);
-        `;
+// Back to top button
+const backToTopButton = document.getElementById('backToTop');
 
-        document.body.appendChild(scrollToTopBtn);
+window.addEventListener('scroll', function() {
+    if (window.scrollY > 300) {
+        backToTopButton.classList.add('visible');
+    } else {
+        backToTopButton.classList.remove('visible');
+    }
+});
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollToTopBtn.style.opacity = '1';
-                scrollToTopBtn.style.visibility = 'visible';
-            } else {
-                scrollToTopBtn.style.opacity = '0';
-                scrollToTopBtn.style.visibility = 'hidden';
-            }
-        });
+backToTopButton.addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
 
-        scrollToTopBtn.addEventListener('click', () => {
-            window.scrollTo({
-                top: 0,
+// Theme toggle functionality
+const themeToggle = document.getElementById('themeToggle');
+let isDarkTheme = true;
+
+themeToggle.addEventListener('click', function() {
+    const root = document.documentElement;
+    
+    if (isDarkTheme) {
+        // Switch to light theme
+        root.style.setProperty('--dark-bg', '#ffffff');
+        root.style.setProperty('--darker-bg', '#f8f9fa');
+        root.style.setProperty('--text-primary', '#1a1a1a');
+        root.style.setProperty('--text-secondary', '#333333');
+        root.style.setProperty('--text-muted', '#666666');
+        root.style.setProperty('--card-bg', 'rgba(255, 107, 53, 0.05)');
+        this.innerHTML = '<i class="fas fa-sun"></i>';
+        isDarkTheme = false;
+    } else {
+        // Switch to dark theme
+        root.style.setProperty('--dark-bg', '#0a0a0a');
+        root.style.setProperty('--darker-bg', '#050505');
+        root.style.setProperty('--text-primary', '#ffffff');
+        root.style.setProperty('--text-secondary', '#cccccc');
+        root.style.setProperty('--text-muted', '#999999');
+        root.style.setProperty('--card-bg', 'rgba(255, 107, 53, 0.08)');
+        this.innerHTML = '<i class="fas fa-moon"></i>';
+        isDarkTheme = true;
+    }
+});
+
+// Typing effect for hero subtitle
+function typeWriter(element, text, speed = 100) {
+    let i = 0;
+    element.innerHTML = '';
+    
+    function type() {
+        if (i < text.length) {
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(type, speed);
+        }
+    }
+    
+    type();
+}
+
+// Initialize typing effect after page load
+window.addEventListener('load', function() {
+    setTimeout(() => {
+        const subtitle = document.querySelector('.hero .subtitle');
+        if (subtitle) {
+            const originalText = subtitle.textContent;
+            typeWriter(subtitle, originalText, 80);
+        }
+    }, 2000);
+});
+
+// Portfolio item click handlers
+portfolioItems.forEach(item => {
+    item.addEventListener('click', function() {
+        const title = this.querySelector('.portfolio-title').textContent;
+        const description = this.querySelector('.portfolio-description').textContent;
+        
+        // Simple modal-like alert (can be enhanced with a proper modal)
+        alert(`${title}\n\n${description}`);
+    });
+});
+
+// Add hover effects for interactive elements
+document.querySelectorAll('.cta-button, .stat-item, .skill-category, .timeline-content, .portfolio-item, .testimonial-item').forEach(element => {
+    element.addEventListener('mouseenter', function() {
+        this.style.transform = this.style.transform || '';
+    });
+});
+
+// Smooth reveal animations for elements coming into view
+const revealElements = document.querySelectorAll('.hero-content > *, .about-text, .skill-category, .timeline-item, .portfolio-item, .testimonial-item');
+
+const revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+        }
+    });
+}, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+});
+
+revealElements.forEach(element => {
+    revealObserver.observe(element);
+});
+
+// Add parallax effect to hero section
+window.addEventListener('scroll', function() {
+    const scrolled = window.pageYOffset;
+    const hero = document.querySelector('.hero');
+    const rate = scrolled * -0.5;
+    
+    if (hero) {
+        hero.style.transform = `translateY(${rate}px)`;
+    }
+});
+
+// Enhanced scroll indicator
+const scrollIndicator = document.querySelector('.scroll-indicator');
+if (scrollIndicator) {
+    scrollIndicator.addEventListener('click', function() {
+        const aboutSection = document.getElementById('about');
+        if (aboutSection) {
+            aboutSection.scrollIntoView({
                 behavior: 'smooth'
             });
-        });
-
-        // Add hover effects to cards
-        document.querySelectorAll('.research-card, .skill-category, .publication-item').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                this.style.transform = 'translateY(-10px) scale(1.02)';
-            });
-            
-            card.addEventListener('mouseleave', function() {
-                this.style.transform = 'translateY(0) scale(1)';
-            });
-        });
-
-        // Preloader for images
-        function preloadImages() {
-            const images = document.querySelectorAll('img');
-            images.forEach(img => {
-                const imageLoader = new Image();
-                imageLoader.src = img.src;
-            });
         }
+    });
+}
 
-        preloadImages();
+// Add dynamic year to footer
+const currentYear = new Date().getFullYear();
+const footerYear = document.querySelector('.footer-bottom p');
+if (footerYear) {
+    footerYear.innerHTML = footerYear.innerHTML.replace('2024', currentYear);
+}
 
-        // Console welcome message
-        console.log('%c🧪 Xudayberganov Islom Portfolio', 'color: #ff6b35; font-size: 20px; font-weight: bold;');
-        console.log('%cKimyo ta\'limi va ilmiy tadqiqotlar sohasida professional faoliyat', 'color: #ff8c42; font-size: 14px;');
-        console.log('%cContact: islomhudajbergnov9@gmail.com', 'color: #ffa726; font-size: 12px;');
+console.log('Portfolio website loaded successfully! 🚀');
+
     </script>
 </body>
 </html>
